@@ -1,0 +1,7 @@
+<div class="menu">
+  <ul>
+    <?php foreach($this->getMenuItems() as $name => $link) : ?>
+      <li><?php $this->printLink($link, $name, $name == $this->active_item ? array('class' => 'active') : array() ) ?></li>
+    <?php endforeach; ?>
+  </ul>
+</div>

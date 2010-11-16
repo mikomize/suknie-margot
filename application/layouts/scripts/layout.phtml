@@ -1,0 +1,54 @@
+<?php
+$this->doctype('XHTML1_STRICT');
+$this->headLink()->prependStylesheet($this->baseUrl() . '/styles/style.css');
+$this->headLink()->prependStylesheet($this->baseUrl() . '/styles/layout.css');
+$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8');
+$this->headMeta()->appendName('google-site-verification', 'r7EF-YVIhjum3LVfgpnh2RHYpSEGXhHb73ATFHI_1sE');
+$this->headTitle('Sklep Suknie Margot Warszawa', 'PREPEND');
+$this->headTitle()->setSeparator(' ');
+$this->headScript()->prependFile($this->baseUrl() . '/javascript/event-manager.js');
+$this->headScript()->prependFile($this->baseUrl() . '/javascript/mootools.js');
+?>
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <?php echo $this->headTitle(); ?>
+      <?php echo $this->headLink(); ?>
+      <?php echo $this->headMeta(); ?>
+      <script>var baseUrl = '<?php echo $this->baseUrl(); ?>'</script>
+      <?php echo $this->headScript(); ?>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-16507345-1']);
+        _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    </head>
+    <body id="page1">
+      <div class="tail">
+        <div class="top-bg">
+          <div class="bot-bg">
+            <div id="main">
+              <div id="header">
+                <div class="text">Zadzwoń <span>+48 501 575 829</span></div>
+                <div class="logo"><?php $this->printLink('', '<img src="'. $this->baseUrl() .'/images/logo.jpg" alt="Suknie Margot" />', array('title' => 'Suknie Margot')); ?></div>
+                <?php
+                
+                echo $this->partial('menu.phtml', array('active_item' => $this->layout()->active_item)) ;?>
+                
+              </div>
+              <div id="content">
+                <?php echo $this->layout()->content ?>
+              </div>
+              <?php echo $this->partial('footer.phtml'); ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>

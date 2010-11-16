@@ -1,0 +1,59 @@
+#main { width:962px; margin:0 auto; text-align:left;}
+
+#header {height:303px;}
+
+#footer { height:127px;}
+
+.column-1, .column-2, .column-3, .col-1, .col-2, .col-3 {float:left;}
+.container {width:100%; overflow:hidden;}
+.container2 {width:100%;}
+
+/* ============================= page1 ===========================*/
+#page1 .row-1 .column-1{ width:235px;}
+#page1 .row-1 .column-2{ width:235px;}
+
+
+#page1 .row-2 .column-1{ width:315px;}
+#page1 .row-2 .column-2{ width:633px;}
+
+/* ============================= page2 ===========================*/
+#page2 .row-1 .column-1{ width:633px;}
+#page2 .row-1 .column-2{ width:315px;}
+#page2 .row-1 .col-1{ width:280px;}
+#page2 .row-1 .col-2{ width:280px;}
+
+#page2 .row-2 .column-1{ width:636px;}
+#page2 .row-2 .column-2{ width:315px;}
+#page2 .row-2 .col-1{ width:182px;}
+#page2 .row-2 .col-2{ width:182px;}
+#page2 .row-2 .col-3{ width:182px;}
+
+/* ============================= page3 ===========================*/
+#page3 .row-1 .column-1{ width:315px;}
+#page3 .row-1 .column-2{ width:315px;}
+#page3 .row-1 .column-3{ width:315px;}
+
+#page3 .row-2 .column-1{ width:315px;}
+#page3 .row-2 .column-2{ width:633px;}
+
+/* ============================= page4 ===========================*/
+#page4 .row-1 .column-1{ width:633px;}
+#page4 .row-1 .column-2{ width:315px;}
+
+#page4 .row-2 .column-1 .column-1{ width:280px;}
+#page4 .row-2 .column-1 .column-2{ width:280px;}
+
+#page4 .row-2 .column-1{ width:636px;}
+#page4 .row-2 .column-2{ width:315px;}
+#page4 .row-2 .col-1{ width:182px;}
+#page4 .row-2 .col-2{ width:182px;}
+#page4 .row-2 .col-3{ width:182px;}
+
+/* ============================= page5 ===========================*/
+#page5 .row-1 .column-1{ width:315px;}
+#page5 .row-1 .column-2{ width:633px;}
+
+#page5 .row-2 .column-1{ width:315px;}
+#page5 .row-2 .column-2{ width:633px;}
+#page5 .row-2 .col-1{ width:272px;}
+#page5 .row-2 .col-2{ width:315px;}

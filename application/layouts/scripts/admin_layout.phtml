@@ -1,0 +1,17 @@
+<?php
+$this->doctype('XHTML1_STRICT');
+$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=utf-8');
+$this->headTitle('Suknie Margot', 'PREPEND');
+$this->headTitle()->setSeparator(' / ');
+?>
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+      <?php echo $this->headTitle(); ?>
+      <?php echo $this->headLink(); ?>
+      <?php echo $this->headMeta(); ?>
+    </head>
+    <body>
+      <?php echo $this->layout()->content ?>
+  </body>
+</html>

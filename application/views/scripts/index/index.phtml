@@ -1,0 +1,130 @@
+<?php
+$this->headTitle('Strona Główna');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/styles/glowna.css')
+?>
+<div class="row-1">
+  <div class="container">
+    <div class="column-1">
+      <div class="box1">
+        <div class="left-border">
+          <div class="right-border">
+            <div class="bot-border">
+              <div class="left-top">
+                <div class="right-top">
+                  <div class="indent">
+                    <?php echo $this->printLink('/galeria?cat=1', '<img class="indent-img" src="' . $this->baseUrl() . '/images/nawieczor.jpg" alt="" />'); ?>
+                     <strong class="padding1">Wieczorowe</strong> 
+                    <?php echo $this->printLink('/galeria?cat=1', '<span><span>Przejdź</span></span>', array('class' => 'link')); ?><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column-2">
+      <div class="box1">
+        <div class="left-border">
+          <div class="right-border">
+            <div class="bot-border">
+              <div class="left-top">
+                <div class="right-top">
+                  <div class="indent">
+                    <?php echo $this->printLink('/galeria?cat=2', '<img class="indent-img" src="' . $this->baseUrl() . '/images/nadzien.jpg" alt="" />'); ?>
+                    <strong class="padding1">Na dzień</strong> 
+                    <?php echo $this->printLink('/galeria?cat=2', '<span><span>Przejdź</span></span>', array('class' => 'link')); ?><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column-2">
+      <div class="box1">
+        <div class="left-border">
+          <div class="right-border">
+            <div class="bot-border">
+              <div class="left-top">
+                <div class="right-top">
+                  <div class="indent">
+                    <?php echo $this->printLink('/galeria?tag=2', '<img class="indent-img" src="' . $this->baseUrl() . '/images/nowosci.jpg" alt="" />'); ?>
+                    <strong class="padding1">Nowości</strong>
+                    <?php echo $this->printLink('/galeria?tag=2', '<span><span>Przejdź</span></span>', array('class' => 'link')); ?><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column-2">
+      <div class="box1">
+        <div class="left-border">
+          <div class="right-border">
+            <div class="bot-border">
+              <div class="left-top">
+                <div class="right-top">
+                  <div class="indent">
+                    <?php echo $this->printLink('/galeria?cat=3', '<img class="indent-img" src="' . $this->baseUrl() . '/images/dodatki.jpg" alt="" />'); ?>
+                    <strong class="padding1">Dodatki</strong>
+                    <?php echo $this->printLink('/galeria?cat=3', '<span><span>Przejdź</span></span>', array('class' => 'link')); ?><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row-2">
+  <div class="container">
+    <div class="column-1">
+      <div class="box2">
+        <div class="left-border">
+          <div class="right-border">
+            <div class="left-top">
+              <div class="right-top">
+                <div class="bot-border">
+                  <div class="indent">
+                    <div class="title"><img src="/images/page1-title4.gif" alt="" /></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column-2">
+      <div class="indent">
+        <div class="container unline"><img src="<?php echo $this->baseUrl()?>/images/glowna.jpg"
+          class="imgindent2" alt="" />
+          <div class="text1">
+          <p>
+          <strong>Serdecznie witamy na naszej stronie! W dniach 17 - 20 września sklep będzie zamknięty. Przepraszamy.</strong>
+          </p>
+          <p>
+          Zajmujemy się sprzedażą eleganckich sukni na wszelkie okazje.
+          </p>
+          <p>
+          Każda kobieta jest wyjątkowa, dlatego każdą suknię proponujemy indywidualnie tylko dla niej, stosownie do jej osobowości i stylu.
+          </p>
+          </div>
+        </div>
+          <p>
+          Łączymy klasyczną elegancję z nutą fantazji, tak aby Panie w ważnych dla nich chwilach, czuły się wyjątkowo i komfortowo a jednocześnie naturalnie. Oryginalne i niepowtarzalne fasony sukni, starannie wykonanych z wysokiej jakości różnorodnych tkanin, są atutami naszego sklepu.
+          </p>
+          
+          <p>
+          Zapraszamy do obejrzenia naszej kolekcji w salonie mając nadzieję, że znajdą Panie u nas kreację dla siebie, tę jedyną i wymarzoną.
+          </p>
+      </div>
+    </div>
+  </div>
+</div>

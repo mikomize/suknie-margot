@@ -1,0 +1,14 @@
+<h2>Edycja produktu</h2>
+
+<?php echo $this->form->render() ?>
+
+<h2>Dodane zdjęcia</h2>
+<?php foreach($this->product['photos'] as $photoId => $photoName):?>
+<div>
+  <div>
+    <?php $this->printPhoto($photoName); ?>
+  </div>
+  <?php if($this->product['primary_photo_id'] == $photoId) echo 'to jest zdjecie glowne' ?>
+  <?php $this->printLink('/admin/delete_photo/' . $photoId, 'usun zdjecie'); ?>
+</div>
+<?php endforeach; ?>

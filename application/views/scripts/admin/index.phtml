@@ -1,0 +1,15 @@
+<?php $this->printLink('/admin/add', 'Dodaj Produkt'); ?>
+<ul>
+<?php foreach($this->products as $id => $category) : ?>
+  <li>
+  <?php echo $category[0]['category'] ?>
+  <ul>
+  <?php foreach ($category as $product) : ?>
+    <li>
+    <?php $this->printProductRow($product);?> 
+    </li>
+  <?php endforeach; ?>
+  </ul>
+  </li>
+<?php endforeach; ?>
+</ul>

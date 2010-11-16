@@ -1,0 +1,25 @@
+.box2 .indent {
+  height : 270px;
+}
+
+.unline {
+  margin-bottom : 0px;
+  padding-top : 15px;
+}
+
+.text1 {
+  margin-right : 15px;
+}
+
+.text1 a {
+  text-decoration : none;
+  font-size : 70%;
+}
+
+.last {
+  padding-top : 15px;
+}
+
+.map-container {
+  margin-left : 10px;
+}
