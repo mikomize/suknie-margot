@@ -3,9 +3,9 @@
 * {	margin:0; padding:0; font-size:100%;}
 
 body{background:#000000; text-align:center;}
-.tail{ background:url(/images/body-tail.gif) top center repeat-y;}
-.top-bg{ background:url(/images/body-bg.jpg) top center no-repeat;}
-.bot-bg{ background:url(/images/footer-bg.jpg) bottom center no-repeat;}
+.tail{ background:url(../images/body-tail.gif) top center repeat-y;}
+.top-bg{ background:url(../images/body-bg.jpg) top center no-repeat;}
+.bot-bg{ background:url(../images/footer-bg.jpg) bottom center no-repeat;}
 
 img {vertical-align:top;}
 a img { border:0;}
@@ -49,8 +49,8 @@ em a{ color:#bf683d;}
 #header .logo{ padding:51px 0 0 21px;}
 #header .menu{ width:100%; overflow:hidden; padding-top:33px;}
 #header .menu li{ float:left; font-size:0.923em; line-height:1.25em; text-transform:uppercase; font-weight:bold;}
-#header .menu a{ color:#f1ffaf; text-decoration:none; display:inline-block; background:url(/images/menu-bg.gif) top repeat-x; padding:13px 62px 13px 61px;}
-#header .menu a:hover, #header .menu .active{ background:url(/images/menu-bg-act.gif) top repeat-x;}
+#header .menu a{ color:#f1ffaf; text-decoration:none; display:inline-block; background:url(../images/menu-bg.gif) top repeat-x; padding:13px 62px 13px 61px;}
+#header .menu a:hover, #header .menu .active{ background:url(../images/menu-bg-act.gif) top repeat-x;}
 
 /* ============================= content ====================== */
 #content{ padding:0 5px 5px 5px;}
@@ -71,41 +71,41 @@ em a{ color:#bf683d;}
 .unline{ border-bottom:solid 1px #331829; padding-bottom:35px; margin-bottom:42px;}
 .title{ padding-bottom:16px;}
 
-.link{ display:inline-block; background:url(/images/link-tail.gif) top repeat-x; color:#dd76ba; font-weight:bold; text-decoration:none; margin-top:13px; font-size:0.846em;}
-.link span{ display:block; background:url(/images/link-left-bg.gif) left top no-repeat;}
-.link span span{ background:url(/images/link-right-bg.gif) right top no-repeat; padding:3px 40px 3px 13px;}
-.link:hover{ background:url(/images/link-tail-act.gif) top repeat-x;}
-.link:hover span{ background:url(/images/link-left-bg-act.gif) left top no-repeat;}
-.link:hover span span{ background:url(/images/link-right-bg-act.gif) right top no-repeat;}
+.link{ display:inline-block; background:url(../images/link-tail.gif) top repeat-x; color:#dd76ba; font-weight:bold; text-decoration:none; margin-top:13px; font-size:0.846em;}
+.link span{ display:block; background:url(../images/link-left-bg.gif) left top no-repeat;}
+.link span span{ background:url(../images/link-right-bg.gif) right top no-repeat; padding:3px 40px 3px 13px;}
+.link:hover{ background:url(../images/link-tail-act.gif) top repeat-x;}
+.link:hover span{ background:url(../images/link-left-bg-act.gif) left top no-repeat;}
+.link:hover span span{ background:url(../images/link-right-bg-act.gif) right top no-repeat;}
 
 .list{ margin-top:-2px;}
-.list li{ line-height:1.384em; background:url(/images/list-marker.gif) no-repeat 0 4px; padding:0 0 6px 20px;}
+.list li{ line-height:1.384em; background:url(../images/list-marker.gif) no-repeat 0 4px; padding:0 0 6px 20px;}
 .list a{ text-decoration:none;}
 .list a:hover{ text-decoration:underline;}
 
-.box1{ background:url(/images/box1-top-tail.gif) top repeat-x #1e0112; width:100%;}
-.box1 .left-border{ background:url(/images/box1-border.gif) left repeat-y;}
-.box1 .right-border{ background:url(/images/box1-border.gif) right repeat-y;}
-.box1 .bot-border{ background:url(/images/box1-border.gif) bottom repeat-x;}
-.box1 .left-top{ background:url(/images/box1-corner-left-top-s.gif) left top no-repeat;}
-.box1 .right-top{ background:url(/images/box1-corner-right-top-s.gif) right top no-repeat;}
+.box1{ background:url(../images/box1-top-tail.gif) top repeat-x #1e0112; width:100%;}
+.box1 .left-border{ background:url(../images/box1-border.gif) left repeat-y;}
+.box1 .right-border{ background:url(../images/box1-border.gif) right repeat-y;}
+.box1 .bot-border{ background:url(../images/box1-border.gif) bottom repeat-x;}
+.box1 .left-top{ background:url(../images/box1-corner-left-top-s.gif) left top no-repeat;}
+.box1 .right-top{ background:url(../images/box1-corner-right-top-s.gif) right top no-repeat;}
 .box1 .indent{ padding:20px 20px 15px 20px;}
 .box1 .indent2{ padding:20px 20px 25px 20px;}
 .box1 .title{ padding-bottom:14px;}
-.box1 .list li{ background:url(/images/box-list-marker.gif) no-repeat 0 4px;}
+.box1 .list li{ background:url(../images/box-list-marker.gif) no-repeat 0 4px;}
 
-.box2{ background:url(/images/box2-top-tail.gif) top repeat-x #1f0113; width:100%;}
-.box2 .left-border{ background:url(/images/box2-border.gif) left repeat-y;}
-.box2 .right-border{ background:url(/images/box2-border.gif) right repeat-y;}
-.box2 .bot-border{ background:url(/images/box2-border.gif) bottom repeat-x;}
-.box2 .left-top{ background:url(/images/box2-corner-left-top.gif) left top no-repeat; width:100%;}
-.box2 .right-top{ background:url(/images/box2-corner-right-top.gif) right top no-repeat;}
-.box2 .bot-border{ background:url(/images/box2-border.gif) bottom repeat-x;}
+.box2{ background:url(../images/box2-top-tail.gif) top repeat-x #1f0113; width:100%;}
+.box2 .left-border{ background:url(../images/box2-border.gif) left repeat-y;}
+.box2 .right-border{ background:url(../images/box2-border.gif) right repeat-y;}
+.box2 .bot-border{ background:url(../images/box2-border.gif) bottom repeat-x;}
+.box2 .left-top{ background:url(../images/box2-corner-left-top.gif) left top no-repeat; width:100%;}
+.box2 .right-top{ background:url(../images/box2-corner-right-top.gif) right top no-repeat;}
+.box2 .bot-border{ background:url(../images/box2-border.gif) bottom repeat-x;}
 .box2 .indent{ padding:28px 20px 22px 19px;}
 .box2 .indent2{ padding:28px 30px 35px 19px;}
 .box2 .indent3{ padding:28px 20px 35px 19px;}
 .box2 .title{ padding-bottom:18px;}
-.box2 .list li{ background:url(/images/box-list-marker.gif) no-repeat 0 4px;}
+.box2 .list li{ background:url(../images/box-list-marker.gif) no-repeat 0 4px;}
 
 /* ============================= footer ====================== */
 #footer{ text-align:center;}
