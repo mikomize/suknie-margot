@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 16920 2009-07-21 13:32:28Z ralph $
+ * @version    $Id: Abstract.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 
@@ -39,7 +39,7 @@ require_once 'Zend/Db/Statement/Pdo.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
@@ -119,7 +119,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
         if (isset($this->_config['persistent']) && ($this->_config['persistent'] == true)) {
             $this->_config['driver_options'][PDO::ATTR_PERSISTENT] = true;
         }
-        
+
         try {
             $this->_connection = new PDO(
                 $dsn,
@@ -141,7 +141,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
              * @see Zend_Db_Adapter_Exception
              */
             require_once 'Zend/Db/Adapter/Exception.php';
-            throw new Zend_Db_Adapter_Exception($e->getMessage());
+            throw new Zend_Db_Adapter_Exception($e->getMessage(), $e->getCode(), $e);
         }
 
     }
@@ -241,7 +241,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
              * @see Zend_Db_Statement_Exception
              */
             require_once 'Zend/Db/Statement/Exception.php';
-            throw new Zend_Db_Statement_Exception($e->getMessage());
+            throw new Zend_Db_Statement_Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -258,10 +258,10 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
         if ($sql instanceof Zend_Db_Select) {
             $sql = $sql->assemble();
         }
-        
+
         try {
             $affected = $this->getConnection()->exec($sql);
-            
+
             if ($affected === false) {
                 $errorInfo = $this->getConnection()->errorInfo();
                 /**
@@ -270,14 +270,14 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
                 require_once 'Zend/Db/Adapter/Exception.php';
                 throw new Zend_Db_Adapter_Exception($errorInfo[2]);
             }
-            
+
             return $affected;
         } catch (PDOException $e) {
             /**
              * @see Zend_Db_Adapter_Exception
              */
             require_once 'Zend/Db/Adapter/Exception.php';
-            throw new Zend_Db_Adapter_Exception($e->getMessage());
+            throw new Zend_Db_Adapter_Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 

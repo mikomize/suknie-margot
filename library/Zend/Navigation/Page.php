@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Navigation
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Page.php 16971 2009-07-22 18:05:45Z mikaelkael $
+ * @version    $Id: Page.php 22882 2010-08-22 14:00:16Z freak $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Navigation/Container.php';
  *
  * @category  Zend
  * @package   Zend_Navigation
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Navigation_Page extends Zend_Navigation_Container
@@ -136,6 +136,13 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
      */
     protected $_properties = array();
 
+    /**
+     * The type of page to use when it wasn't set
+     * 
+     * @var string
+     */
+    protected static $_defaultPageType;
+    
     // Initialization:
 
     /**
@@ -181,6 +188,11 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
 
         if (isset($options['type'])) {
             $type = $options['type'];
+        } elseif(self::getDefaultPageType()!= null) {
+            $type = self::getDefaultPageType();
+        }
+        
+        if(isset($type)) {
             if (is_string($type) && !empty($type)) {
                 switch (strtolower($type)) {
                     case 'mvc':
@@ -237,7 +249,7 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
         if (is_array($options)) {
             $this->setOptions($options);
         } elseif ($options instanceof Zend_Config) {
-            $this->setConfig($config);
+            $this->setConfig($options);
         }
 
         // do custom initialization
@@ -1106,6 +1118,20 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
     protected static function _normalizePropertyName($property)
     {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
+    }
+    
+    public static function setDefaultPageType($type = null) {
+        if($type !== null && !is_string($type)) {
+            throw new Zend_Navigation_Exception(
+                'Cannot set default page type: type is no string but should be'
+            );
+        }
+        
+        self::$_defaultPageType = $type;
+    }
+    
+    public static function getDefaultPageType() {
+        return self::$_defaultPageType;
     }
 
     // Abstract methods:

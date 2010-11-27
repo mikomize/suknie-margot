@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Filter
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: And.php 13089 2008-12-07 14:00:24Z sgehrig $
+ * @version    $Id: And.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 /**
@@ -31,10 +31,10 @@ require_once 'Zend/Ldap/Filter/Logical.php';
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Filter
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Filter_And extends Zend_Ldap_Filter_Logical  
+class Zend_Ldap_Filter_And extends Zend_Ldap_Filter_Logical
 {
     /**
      * Creates an 'and' grouping filter.

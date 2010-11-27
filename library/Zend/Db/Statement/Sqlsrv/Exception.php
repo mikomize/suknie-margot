@@ -12,21 +12,23 @@
  * obtain it through the world-wide-web, please send an email
  * to license@zend.com so we can send you a copy immediately.
  *
+ * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 /**
- * Zend_Db_Statement_Exception
+ * @see Zend_Db_Statement_Exception
  */
 require_once 'Zend/Db/Statement/Exception.php';
 
 /**
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Statement_Sqlsrv_Exception extends Zend_Db_Statement_Exception
@@ -34,14 +36,14 @@ class Zend_Db_Statement_Sqlsrv_Exception extends Zend_Db_Statement_Exception
     /**
      * Constructor
      *
-     * If $message is an array, the assumption is that the return value of 
+     * If $message is an array, the assumption is that the return value of
      * sqlsrv_errors() was provided. If so, it then retrieves the most recent
      * error from that stack, and sets the message and code based on it.
      *
      * @param null|array|string $message
      * @param null|int $code
      */
-    public function __construct($message = null, $code = 0) 
+    public function __construct($message = null, $code = 0)
     {
        if (is_array($message)) {
             // Error should be array of errors
@@ -52,7 +54,7 @@ class Zend_Db_Statement_Sqlsrv_Exception extends Zend_Db_Statement_Exception
 
             $code    = (int)    $message['code'];
             $message = (string) $message['message'];
-       } 
+       }
        parent::__construct($message, $code);
    }
 }

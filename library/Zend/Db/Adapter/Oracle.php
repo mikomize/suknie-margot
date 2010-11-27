@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Oracle.php 16920 2009-07-21 13:32:28Z ralph $
+ * @version    $Id: Oracle.php 21108 2010-02-19 22:36:08Z mikaelkael $
  */
 
 /**
@@ -34,7 +34,7 @@ require_once 'Zend/Db/Statement/Oracle.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
@@ -81,7 +81,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     /**
      * @var integer
      */
-    protected $_execute_mode = OCI_COMMIT_ON_SUCCESS;
+    protected $_execute_mode = null;
 
     /**
      * Default class name for a DB statement.
@@ -119,8 +119,10 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
             throw new Zend_Db_Adapter_Oracle_Exception('The OCI8 extension is required for this adapter but the extension is not loaded');
         }
 
+        $this->_setExecuteMode(OCI_COMMIT_ON_SUCCESS);
+
         $connectionFuncName = ($this->_config['persistent'] == true) ? 'oci_pconnect' : 'oci_connect';
-        
+
         $this->_connection = @$connectionFuncName(
                 $this->_config['username'],
                 $this->_config['password'],
@@ -358,7 +360,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
                     TC.DATA_SCALE, TC.DATA_PRECISION, C.CONSTRAINT_TYPE, CC.POSITION
                 FROM ALL_TAB_COLUMNS TC
                 LEFT JOIN (ALL_CONS_COLUMNS CC JOIN ALL_CONSTRAINTS C
-                    ON (CC.CONSTRAINT_NAME = C.CONSTRAINT_NAME AND CC.TABLE_NAME = C.TABLE_NAME AND C.CONSTRAINT_TYPE = 'P'))
+                    ON (CC.CONSTRAINT_NAME = C.CONSTRAINT_NAME AND CC.TABLE_NAME = C.TABLE_NAME AND CC.OWNER = C.OWNER AND C.CONSTRAINT_TYPE = 'P'))
                   ON TC.TABLE_NAME = CC.TABLE_NAME AND TC.COLUMN_NAME = CC.COLUMN_NAME
                 WHERE UPPER(TC.TABLE_NAME) = UPPER(:TBNAME)";
             $bind[':TBNAME'] = $tableName;
@@ -598,46 +600,6 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     public function _getExecuteMode()
     {
         return $this->_execute_mode;
-    }
-
-    /**
-     * Inserts a table row with specified data.
-     *
-     * Oracle does not support anonymous ('?') binds.
-     *
-     * @param mixed $table The table to insert data into.
-     * @param array $bind Column-value pairs.
-     * @return int The number of affected rows.
-     */
-    public function insert($table, array $bind)
-    {
-        $i = 0;
-        // extract and quote col names from the array keys
-        $cols = array();
-        $vals = array();
-        foreach ($bind as $col => $val) {
-            $cols[] = $this->quoteIdentifier($col, true);
-            if ($val instanceof Zend_Db_Expr) {
-                $vals[] = $val->__toString();
-                unset($bind[$col]);
-            } else {
-                $vals[] = ':'.$col.$i;
-                unset($bind[$col]);
-                $bind[':'.$col.$i] = $val;
-            }
-            $i++;
-        }
-
-        // build the statement
-        $sql = "INSERT INTO "
-             . $this->quoteIdentifier($table, true)
-             . ' (' . implode(', ', $cols) . ') '
-             . 'VALUES (' . implode(', ', $vals) . ')';
-
-        // execute the statement and return the number of affected rows
-        $stmt = $this->query($sql, $bind);
-        $result = $stmt->rowCount();
-        return $result;
     }
 
     /**

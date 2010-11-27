@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage RootDSE
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: RootDse.php 13449 2008-12-23 17:49:44Z sgehrig $
+ * @version    $Id: RootDse.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Ldap/Node/Abstract.php';
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage RootDSE
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
@@ -82,7 +82,7 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
      * Constructor is protected to enforce the use of factory methods.
      *
      * @param  Zend_Ldap_Dn $dn
-     * @param  array $data
+     * @param  array        $data
      */
     protected function __construct(Zend_Ldap_Dn $dn, array $data)
     {
@@ -112,7 +112,7 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
     /**
      * Determines if the version is supported
      *
-     * @param string|int|array $versions version(s) to check
+     * @param  string|int|array $versions version(s) to check
      * @return boolean
      */
     public function supportsVersion($versions)
@@ -123,7 +123,7 @@ class Zend_Ldap_Node_RootDse extends Zend_Ldap_Node_Abstract
     /**
      * Determines if the sasl mechanism is supported
      *
-     * @param string|array $mechlist SASL mechanisms to check
+     * @param  string|array $mechlist SASL mechanisms to check
      * @return boolean
      */
     public function supportsSaslMechanism($mechlist)

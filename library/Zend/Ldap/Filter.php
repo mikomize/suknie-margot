@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Filter
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Filter.php 16613 2009-07-10 06:55:41Z ralph $
+ * @version    $Id: Filter.php 22662 2010-07-24 17:37:36Z mabe $
  */
 
 /**
@@ -31,17 +31,17 @@ require_once 'Zend/Ldap/Filter/String.php';
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Filter
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Ldap_Filter extends Zend_Ldap_Filter_String
 {
-    const TYPE_EQUALS = '=';
-    const TYPE_GREATER = '>';
+    const TYPE_EQUALS         = '=';
+    const TYPE_GREATER        = '>';
     const TYPE_GREATEROREQUAL = '>=';
-    const TYPE_LESS = '<';
-    const TYPE_LESSOREQUAL = '<=';
-    const TYPE_APPROX = '~=';
+    const TYPE_LESS           = '<';
+    const TYPE_LESSOREQUAL    = '<=';
+    const TYPE_APPROX         = '~=';
 
     /**
      * Creates an 'equals' filter.
@@ -242,9 +242,9 @@ class Zend_Ldap_Filter extends Zend_Ldap_Filter_String
     private static function _createFilterString($attr, $value, $filtertype, $prepend = null, $append = null)
     {
         $str = $attr . $filtertype;
-        if (!is_null($prepend)) $str .= $prepend;
+        if ($prepend !== null) $str .= $prepend;
         $str .= self::escapeValue($value);
-        if (!is_null($append)) $str .= $append;
+        if ($append !== null) $str .= $append;
         return $str;
     }
 

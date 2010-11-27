@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Schema
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Item.php 13449 2008-12-23 17:49:44Z sgehrig $
+ * @version    $Id: Item.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 /**
@@ -27,7 +27,7 @@
  * @category   Zend
  * @package    Zend_Ldap
  * @subpackage Schema
- * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
@@ -52,8 +52,8 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
     /**
      * Sets the data
      *
-     * @param array $data
-     * @return Zend_Ldap_Node_Schema_Item *Provides a fluid interface*
+     * @param  array $data
+     * @return Zend_Ldap_Node_Schema_Item Provides a fluid interface
      */
     public function setData(array $data)
     {

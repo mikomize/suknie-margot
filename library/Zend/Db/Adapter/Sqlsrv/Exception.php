@@ -15,13 +15,13 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- *
+ * @version    $Id: Exception.php 20625 2010-01-25 21:03:53Z ralph $
  */
 
 /**
- * Zend
+ * @see Zend_Db_Adapter_Exception
  */
 require_once 'Zend/Db/Adapter/Exception.php';
 
@@ -31,7 +31,7 @@ require_once 'Zend/Db/Adapter/Exception.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Adapter_Sqlsrv_Exception extends Zend_Db_Adapter_Exception
@@ -39,14 +39,14 @@ class Zend_Db_Adapter_Sqlsrv_Exception extends Zend_Db_Adapter_Exception
     /**
      * Constructor
      *
-     * If $message is an array, the assumption is that the return value of 
+     * If $message is an array, the assumption is that the return value of
      * sqlsrv_errors() was provided. If so, it then retrieves the most recent
      * error from that stack, and sets the message and code based on it.
      *
      * @param null|array|string $message
      * @param null|int $code
      */
-    public function __construct($message = null, $code = 0) 
+    public function __construct($message = null, $code = 0)
     {
        if (is_array($message)) {
             // Error should be array of errors
@@ -57,7 +57,7 @@ class Zend_Db_Adapter_Sqlsrv_Exception extends Zend_Db_Adapter_Exception
 
             $code    = (int)    $message['code'];
             $message = (string) $message['message'];
-       } 
-       parent::__construct($message, new Exception($message, $code));
+       }
+       parent::__construct($message, $code, new Exception($message, $code));
    }
 }

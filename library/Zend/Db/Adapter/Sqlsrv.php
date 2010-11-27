@@ -15,14 +15,10 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @version    $Id: Sqlsrv.php 21885 2010-04-16 15:13:40Z juokaz $
  */
-
-/**
- * @see Zend_Loader
- */
-require_once 'Zend/Loader.php';
 
 /**
  * @see Zend_Db_Adapter_Abstract
@@ -38,7 +34,7 @@ require_once 'Zend/Db/Statement/Sqlsrv.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
@@ -50,8 +46,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
      *
      * username => (string) Connect to the database as this username.
      * password => (string) Password associated with the username.
-     * dbname   => Either the name of the local Oracle instance, or the
-     *             name of the entry in tnsnames.ora to which you want to connect.
+     * dbname   => The name of the local SQL Server instance
      *
      * @var array
      */
@@ -134,23 +129,30 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         if (isset($this->_config['port'])) {
             $port        = (integer) $this->_config['port'];
             $serverName .= ', ' . $port;
-        } 
+        }
 
         $connectionInfo = array(
             'Database' => $this->_config['dbname'],
-            'UID'      => $this->_config['username'],
-            'PWD'      => $this->_config['password'],
         );
+
+        if (isset($this->_config['username']) && isset($this->_config['password']))
+        {
+            $connectionInfo += array(
+                'UID'      => $this->_config['username'],
+                'PWD'      => $this->_config['password'],
+            );
+        }
+        // else - windows authentication
 
         if (!empty($this->_config['driver_options'])) {
             foreach ($this->_config['driver_options'] as $option => $value) {
                 // A value may be a constant.
                 if (is_string($value)) {
-                    $constantValue = @constant(strtoupper($value));
-                    if ($constantValue === null) {
-                        $connectionInfo[$option] = $value;
+                    $constantName = strtoupper($value);
+                    if (defined($constantName)) {
+                        $connectionInfo[$option] = constant($constantName);
                     } else {
-                        $connectionInfo[$option] = $constantValue;
+                        $connectionInfo[$option] = $value;
                     }
                 }
             }
@@ -165,8 +167,41 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             require_once 'Zend/Db/Adapter/Sqlsrv/Exception.php';
             throw new Zend_Db_Adapter_Sqlsrv_Exception(sqlsrv_errors());
         }
+    }
 
-        sqlsrv_query($this->_connection, 'SET QUOTED_IDENTIFIER ON');
+    /**
+     * Check for config options that are mandatory.
+     * Throw exceptions if any are missing.
+     *
+     * @param array $config
+     * @throws Zend_Db_Adapter_Exception
+     */
+    protected function _checkRequiredOptions(array $config)
+    {
+        // we need at least a dbname
+        if (! array_key_exists('dbname', $config)) {
+            /** @see Zend_Db_Adapter_Exception */
+            require_once 'Zend/Db/Adapter/Exception.php';
+            throw new Zend_Db_Adapter_Exception("Configuration array must have a key for 'dbname' that names the database instance");
+        }
+
+        if (! array_key_exists('password', $config) && array_key_exists('username', $config)) {
+            /**
+             * @see Zend_Db_Adapter_Exception
+             */
+            require_once 'Zend/Db/Adapter/Exception.php';
+            throw new Zend_Db_Adapter_Exception("Configuration array must have a key for 'password' for login credentials.
+                                                If Windows Authentication is desired, both keys 'username' and 'password' should be ommited from config.");
+        }
+
+        if (array_key_exists('password', $config) && !array_key_exists('username', $config)) {
+            /**
+             * @see Zend_Db_Adapter_Exception
+             */
+            require_once 'Zend/Db/Adapter/Exception.php';
+            throw new Zend_Db_Adapter_Exception("Configuration array must have a key for 'username' for login credentials.
+                                                If Windows Authentication is desired, both keys 'username' and 'password' should be ommited from config.");
+        }
     }
 
     /**
@@ -253,6 +288,9 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         $stmtClass = $this->_defaultStmtClass;
 
         if (!class_exists($stmtClass)) {
+            /**
+             * @see Zend_Loader
+             */
             require_once 'Zend/Loader.php';
             Zend_Loader::loadClass($stmtClass);
         }
@@ -300,7 +338,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             $sql       = 'SELECT IDENT_CURRENT (' . $tableName . ') as Current_Identity';
             return (string) $this->fetchOne($sql);
         }
-        
+
         if ($this->_lastInsertId > 0) {
             return (string) $this->_lastInsertId;
         }
@@ -348,7 +386,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
 
         return $result;
     }
-    
+
     /**
      * Returns a list of the tables in the database.
      *
@@ -399,6 +437,13 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         $sql    = "exec sp_columns @table_name = " . $this->quoteIdentifier($tableName, true);
         $stmt   = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
+		
+		// ZF-7698
+		$stmt->closeCursor();
+        
+        if (count($result) == 0) {
+            return array();
+        }
 
         $owner           = 1;
         $table_name      = 2;
@@ -415,14 +460,14 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
          * Discover primary key column(s) for this table.
          */
         $tableOwner = $result[0][$owner];
-        $sql        = "exec sp_pkeys @table_owner = " . $tableOwner 
+        $sql        = "exec sp_pkeys @table_owner = " . $tableOwner
                     . ", @table_name = " . $this->quoteIdentifier($tableName, true);
         $stmt       = $this->query($sql);
 
         $primaryKeysResult = $stmt->fetchAll(Zend_Db::FETCH_NUM);
         $primaryKeyColumn  = array();
 
-        // Per http://msdn.microsoft.com/en-us/library/ms189813.aspx, 
+        // Per http://msdn.microsoft.com/en-us/library/ms189813.aspx,
         // results from sp_keys stored procedure are:
         // 0=TABLE_QUALIFIER 1=TABLE_OWNER 2=TABLE_NAME 3=COLUMN_NAME 4=KEY_SEQ 5=PK_NAME
 
@@ -567,23 +612,27 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             throw new Zend_Db_Adapter_Exception("LIMIT argument offset=$offset is not valid");
         }
 
-        $orderby = stristr($sql, 'ORDER BY');
-        if ($orderby !== false) {
-            $sort  = (stripos($orderby, ' desc') !== false) ? 'desc' : 'asc';
-            $order = str_ireplace('ORDER BY', '', $orderby);
-            $order = trim(preg_replace('/\bASC\b|\bDESC\b/i', '', $order));
-        }
+        if ($offset == 0) {
+            $sql = preg_replace('/^SELECT\s/i', 'SELECT TOP ' . $count . ' ', $sql);
+        } else {
+            $orderby = stristr($sql, 'ORDER BY');
 
-        $sql = preg_replace('/^SELECT\s/i', 'SELECT TOP ' . ($count+$offset) . ' ', $sql);
+            if (!$orderby) {
+                $over = 'ORDER BY (SELECT 0)';
+            } else {
+                $over = preg_replace('/\"[^,]*\".\"([^,]*)\"/i', '"inner_tbl"."$1"', $orderby);
+            }
+            
+            // Remove ORDER BY clause from $sql
+            $sql = preg_replace('/\s+ORDER BY(.*)/', '', $sql);
+            
+            // Add ORDER BY clause as an argument for ROW_NUMBER()
+            $sql = "SELECT ROW_NUMBER() OVER ($over) AS \"ZEND_DB_ROWNUM\", * FROM ($sql) AS inner_tbl";
+          
+            $start = $offset + 1;
+            $end = $offset + $count;
 
-        $sql = 'SELECT * FROM (SELECT TOP ' . $count . ' * FROM (' . $sql . ') AS inner_tbl';
-        if ($orderby !== false) {
-            $sql .= ' ORDER BY ' . $order . ' ';
-            $sql .= (stripos($sort, 'asc') !== false) ? 'DESC' : 'ASC';
-        }
-        $sql .= ') AS outer_tbl';
-        if ($orderby !== false) {
-            $sql .= ' ORDER BY ' . $order . ' ' . $sort;
+            $sql = "WITH outer_tbl AS ($sql) SELECT * FROM outer_tbl WHERE \"ZEND_DB_ROWNUM\" BETWEEN $start AND $end";
         }
 
         return $sql;
@@ -613,10 +662,10 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
     public function getServerVersion()
     {
         $this->_connect();
-        $version = sqlsrv_client_info($this->_connection);
+        $serverInfo = sqlsrv_server_info($this->_connection);
 
-        if ($version !== false) {
-            return $version['DriverVer'];
+        if ($serverInfo !== false) {
+            return $serverInfo['SQLServerVersion'];
         }
 
         return null;

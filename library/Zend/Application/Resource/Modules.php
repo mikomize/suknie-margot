@@ -15,10 +15,16 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Modules.php 16200 2009-06-21 18:50:06Z thomas $
+ * @version    $Id: Modules.php 20814 2010-02-01 20:13:08Z freak $
  */
+
+/**
+ * @see Zend_Application_Resource_ResourceAbstract
+ */
+require_once 'Zend/Application/Resource/ResourceAbstract.php';
+
 
 /**
  * Module bootstrapping resource
@@ -26,7 +32,7 @@
  * @category   Zend
  * @package    Zend_Application
  * @subpackage Resource
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Application_Resource_Modules extends Zend_Application_Resource_ResourceAbstract
@@ -62,22 +68,39 @@ class Zend_Application_Resource_Modules extends Zend_Application_Resource_Resour
 
         $modules = $front->getControllerDirectory();
         $default = $front->getDefaultModule();
-        foreach (array_keys($modules) as $module) {
-            if ($module === $default) {
-                continue;
-            }
-
+        $curBootstrapClass = get_class($bootstrap);
+        foreach ($modules as $module => $moduleDirectory) {
             $bootstrapClass = $this->_formatModuleName($module) . '_Bootstrap';
             if (!class_exists($bootstrapClass, false)) {
-                $bootstrapPath  = $front->getModuleDirectory($module) . '/Bootstrap.php';
+                $bootstrapPath  = dirname($moduleDirectory) . '/Bootstrap.php';
                 if (file_exists($bootstrapPath)) {
+                    $eMsgTpl = 'Bootstrap file found for module "%s" but bootstrap class "%s" not found';
                     include_once $bootstrapPath;
-                    if (!class_exists($bootstrapClass, false)) {
-                        throw new Zend_Application_Resource_Exception('Bootstrap file found for module "' . $module . '" but bootstrap class "' . $bootstrapClass . '" not found');
+                    if (($default != $module)
+                        && !class_exists($bootstrapClass, false)
+                    ) {
+                        throw new Zend_Application_Resource_Exception(sprintf(
+                            $eMsgTpl, $module, $bootstrapClass
+                        ));
+                    } elseif ($default == $module) {
+                        if (!class_exists($bootstrapClass, false)) {
+                            $bootstrapClass = 'Bootstrap';
+                            if (!class_exists($bootstrapClass, false)) {
+                                throw new Zend_Application_Resource_Exception(sprintf(
+                                    $eMsgTpl, $module, $bootstrapClass
+                                ));
+                            }
+                        }
                     }
                 } else {
                     continue;
                 }
+            }
+
+            if ($bootstrapClass == $curBootstrapClass) {
+                // If the found bootstrap class matches the one calling this
+                // resource, don't re-execute.
+                continue;
             }
 
             $moduleBootstrap = new $bootstrapClass($bootstrap);

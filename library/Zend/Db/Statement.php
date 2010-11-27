@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Statement.php 16541 2009-07-07 06:59:03Z bkarwin $
+ * @version    $Id: Statement.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 /**
@@ -36,11 +36,16 @@ require_once 'Zend/Db/Statement/Interface.php';
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
 {
+
+    /**
+     * @var resource|object The driver level statement object/resource
+     */
+    protected $_stmt = null;
 
     /**
      * @var Zend_Db_Adapter_Abstract
@@ -110,6 +115,17 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
         $this->_prepare($sql);
 
         $this->_queryId = $this->_adapter->getProfiler()->queryStart($sql);
+    }
+
+    /**
+     * Internal method called by abstract statment constructor to setup
+     * the driver level statement
+     *
+     * @return void
+     */
+    protected function _prepare($sql)
+    {
+        return;
     }
 
     /**
@@ -455,5 +471,15 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
     public function getAdapter()
     {
         return $this->_adapter;
+    }
+
+    /**
+     * Gets the resource or object setup by the
+     * _parse
+     * @return unknown_type
+     */
+    public function getDriverStatement()
+    {
+        return $this->_stmt;
     }
 }
