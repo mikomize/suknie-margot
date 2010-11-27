@@ -49,10 +49,43 @@ class Default_Model_Products {
     $this->db = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('db');
     $this->db->query('SET NAMES utf8');
     $this->db->query('SET CHARACTER SET utf8');
-    //$this->dbCache = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('cachemanager')->getCacheManager()->getCache('db');
+    $this->dbCache = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('cachemanager')->getCache('db');
+  }
+ 
+  private function getProductCacheKey($productId, $flags) {
+    return 'product_' . $productId . '_' . $flags;
+  }
+
+  private function getProductCacheTag($productId) {
+    return 'product_' . $productId;
+  }
+
+  private function getProductsCacheKey($flags) {
+    return 'products_' . $flags;
+  }
+
+  private function getProductsCacheTag() {
+    return 'products';
   }
   
-  public function getProduct($productId, $flags = 0) 
+  private function invalidateProductCache($productID) {
+    $this->dbCache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array($this->getProductCacheTag($productId)));
+  }
+
+  private function invalidateProductsCache() {
+    $this->dbCache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array($this->getProductsCacheTag()));
+  }
+   
+  public function getProductCached($productId, $flags = 0) {
+    $cacheKey = $this->getProductCacheKey($productId, $flags);
+    if(false === $product = $this->dbCache->load($cacheKey)) {
+      $product = $this->getProduct($productId, $flags);
+      $this->dbCache->save($product, $cacheKey, array($this->getProductCacheTag($productId)));
+    } 
+    return $product;
+  }
+
+  private function getProduct($productId, $flags = 0) 
   {
     $query = 'SELECT id,name,category_id,price,primary_photo_id,length,description FROM products WHERE id = ?';
     $result = $this->db->fetchRow($query, $productId);
@@ -70,13 +103,22 @@ class Default_Model_Products {
     return $result;
   }
   
-  public function getProducts($flags = 0) 
+  public function getProductsCached($flags = 0) {
+    $cacheKey = $this->getProductsCacheKey($flags);
+    if(false === $products = $this->dbCache->load($cacheKey)) {
+      $products = $this->getProducts($flags);
+      $this->dbCache->save($products, $cacheKey, array($this->getProductsCacheTag()));
+    } 
+    return $products;
+  }
+
+  private function getProducts($flags = 0) 
   {
     $query = 'SELECT id FROM products';
     $result = $this->db->fetchCol($query);
     $products = array();
     foreach($result as $product_id) {
-      $product = $this->getProduct($product_id, $flags);
+      $product = $this->getProductCached($product_id, $flags);
       $products[$product_id] = $product;
     }
     return $products;
@@ -124,10 +166,11 @@ class Default_Model_Products {
       $this->addPhoto($productId, $photoName);
       $this->createThumbnail($photoName);
     }
+    $this->invalidateProductsCache();
     
   }
   
-  public function addTag($tagId, $productId)
+  private function addTag($tagId, $productId)
   {
     $data = array(
       'tag_id' => $tagId,
@@ -136,7 +179,7 @@ class Default_Model_Products {
     $this->db->insert('tags', $data);
   }
   
-  public function addSize($sizeId, $productId)
+  private function addSize($sizeId, $productId)
   {
     $data = array(
       'size_id' => $sizeId,
@@ -148,6 +191,8 @@ class Default_Model_Products {
   public function deleteProduct($productId) 
   {
     $this->db->delete('products', 'id = ' . $this->db->quote($productId));
+    $this->invalidateProductsCache();
+    $this->invalidateProductCache($productId);
   }
   
   public function updateProduct($data)
@@ -175,6 +220,7 @@ class Default_Model_Products {
     foreach($sizes as $sizeId) {
       $this->addSize($sizeId, $productId);
     }
+    $this->invalidateProductCache($productId);
   }
   
   public function addPhoto($productId, $photoName) {

@@ -20,7 +20,7 @@ class AdminController extends Zend_Controller_Action
   public function indexAction() 
   {
     $this->requireAdmin();
-    $products = $this->productsModel->getProducts();
+    $products = $this->productsModel->getProductsCached();
     $groupedProducts = array();
     foreach($products as $product) {
       $groupedProducts[$product['category_id']][] = $product; 
@@ -76,7 +76,7 @@ class AdminController extends Zend_Controller_Action
     } else {
       $id = $this->_getParam('id');
       if(!is_null($id)) {
-        $product = $this->productsModel->getProduct($id, Default_Model_Products::WITH_TAGS | Default_Model_Products::WITH_SIZES | Default_Model_Products::WITH_PHOTOS);
+        $product = $this->productsModel->getProductCached($id, Default_Model_Products::WITH_TAGS | Default_Model_Products::WITH_SIZES | Default_Model_Products::WITH_PHOTOS);
         if($product) {
           $form->setDefaults($product);
           $this->view->product = $product;
