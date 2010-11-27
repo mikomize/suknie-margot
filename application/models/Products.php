@@ -46,9 +46,10 @@ class Default_Model_Products {
   
   public function __construct() 
   {
-    $this->db = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getContainer()->db;
+    $this->db = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('db');
     $this->db->query('SET NAMES utf8');
     $this->db->query('SET CHARACTER SET utf8');
+    //$this->dbCache = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('cachemanager')->getCacheManager()->getCache('db');
   }
   
   public function getProduct($productId, $flags = 0) 
@@ -61,35 +62,27 @@ class Default_Model_Products {
     if($flags & self::WITH_SIZES) {
       $result['sizes'] = $this->getSizes($productId);
     }
-    if($flags & self::WITH_SIZES) {
+    if($flags & self::WITH_PHOTOS) {
       $result['photos'] = $this->getPhotos($productId);
+      $result['primary_photo_id'] = current($result['photos']); // hak
     }
+    $result['category'] = self::$categoryList[$result['category_id']];
     return $result;
   }
   
   public function getProducts($flags = 0) 
   {
-    $query = 'SELECT id,name,category_id,price,primary_photo_id,length,description FROM products';
-    $result = $this->db->fetchAll($query);
+    $query = 'SELECT id FROM products';
+    $result = $this->db->fetchCol($query);
     $products = array();
-    foreach($result as $product) {
-      if($flags & self::WITH_TAGS) {
-        $product['tags'] = $this->getTags($product['id']);
-      }
-      if($flags & self::WITH_SIZES) {
-        $product['sizes'] = $this->getSizes($product['id']);
-      }
-      if($flags & self::WITH_PHOTOS) {
-        $product['photos'] = $this->getPhotos($product['id']);
-        $product['primary_photo_id'] = current($product['photos']); // hak
-      }
-      $product['category'] = self::$categoryList[$product['category_id']];
-      $products[$product['id']] = $product; 
+    foreach($result as $product_id) {
+      $product = $this->getProduct($product_id, $flags);
+      $products[$product_id] = $product;
     }
     return $products;
   }
   
-  public function getTags($productId) 
+  private function getTags($productId) 
   {
     $query = 'SELECT tag_id FROM tags WHERE product_id = ?';
     $result = $this->db->fetchCol($query, $productId);
@@ -100,7 +93,7 @@ class Default_Model_Products {
     return $tags;
   }
   
-  public function getSizes($productId) 
+  private function getSizes($productId) 
   {
     $query = 'SELECT size_id FROM sizes WHERE product_id = ?';
     $result = $this->db->fetchCol($query, $productId);
@@ -220,7 +213,7 @@ class Default_Model_Products {
     imagedestroy($srcImg);
   }
   
-  public function getPhotos($productId) {
+  private function getPhotos($productId) {
     $query = 'SELECT photo_id, photo_name FROM photos WHERE product_id = ?';
     $result = $this->db->fetchAll($query, $productId);
     $photos = array();
